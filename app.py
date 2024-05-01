@@ -8,16 +8,18 @@ def enterName():
   return pip.inputStr('Enter the contact name: ', allowRegexes=r'^([A-Za-z0-9_*=-%]*\s[A-Za-z0-9_*=-%]*)+$', )
 
 def enterPhoneNumber():
-  return pip.inputStr('Enter the phone number: ', allowRegexes=r'(((\d{3}|\(\d{3}\))?(-|\.)?(\d{3})(-|\.)(\d{4}))|((76|79|72|78|69|68|62|61)\d{6}))' )
+  return pip.inputStr('Enter the phone number: ', allowRegexes=r'^(76|79|72|78|69|68|62|61)\d{6})$' )
 
 def enterEmail():
-  return pip.inputStr('Enter the email address: ', allowRegexes=r'[a-zA-Z0-9.%+_-]+@[a-zA-Z0-9.%+_-]+\.[a-z]+')
+  return pip.inputStr('Enter the email address: ', allowRegexes=r'^[a-zA-Z0-9.%+_-]+@[a-zA-Z0-9.%+_-]+\.[a-z]+$')
 
 
 
 def displayContacts(allcontacts):
-  for contact in allcontacts:
-    pprint.pformat(contact)
+  count = 1
+  for k, v in allcontacts.items():
+    print('{}. {}: {}'.format(count, k, v['telephone']))
+    count += 1
   
 
 def createContact():
@@ -29,9 +31,18 @@ def findContact():
   for contactName in contacts.keys():
     if contactName.startswith(name) or contactName.endswith(name):
       proposedContacts[contactName] = contacts[contactName]
+  if len(proposedContacts):
+    print('\nList Contacts found')
+    displayContacts(proposedContacts)
+    if len(proposedContacts) > 1:
+      option = pip.inputYesNo("would you like to choose a specific contact?")
+      if option == 'yes':
+        choice = pip.inputInt('Enter the contact number, for example: 1')
+      
+    
+  else:
+    print("No contact found with name: " + name)
   
-
-''.startswith
 def editContact():
   print('edit contact')
 
@@ -53,7 +64,10 @@ while True:
   option = pip.inputInt('Enter your option: ', min=1, max=6)
   match option:
     case 1: createContact()
-    case 2: displayContacts()
+    case 2: 
+      print('\nList of all contacts')
+      displayContacts(contacts)
+      break
     case 3: editContact()
     case 4: findContact()
     case 5: deleteContact()
