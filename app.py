@@ -1,4 +1,4 @@
-import pyinputplus as pip, re, sys, pprint
+import pyinputplus as pip, sys
 
 contacts = {}
 
