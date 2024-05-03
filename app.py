@@ -30,17 +30,17 @@ def finder(contacts, key):
       proposedContacts[contactName] = contacts[contactName]
   return proposedContacts
 
-def NoContactsmessage():
+def noContactsmessage():
   print("You don't have any contacts, please add them to the list")
 
 def findContact(contacts):
   if (len(contacts))<1:
-    NoContactsmessage()
+    noContactsmessage()
     return None
   name = enterName()
   proposedContacts = finder(contacts, name)
   if len(proposedContacts):
-    print('\nList Contacts found')
+    print('\nList of Contacts found')
     displayContacts(proposedContacts)
     if len(proposedContacts) > 1:
       option = pip.inputYesNo("would you like to choose a specific contact?")
@@ -56,27 +56,27 @@ def findContact(contacts):
 def editContact():
   contact = findContact(contacts)
   if contact is None:
-    NoContactsmessage()
+    noContactsmessage()
   else:
     name = enterName(True)
     tel = enterPhoneNumber(True)
     email = enterEmail(True)
-    keys =  list(contact.keys())
+    key =  list(contact.keys())[0]
     if len(tel):
-      contacts[keys[0]]['telephone'] = tel
+      contacts[key]['telephone'] = tel
     if len(email):
-      contacts[keys[0]]['email'] = email
+      contacts[key]['email'] = email
     if len(name):
-      contacts[name] = contacts[keys[0]]
-      del contacts[keys[0]]
+      contacts[name] = contacts[key]
+      del contacts[key]
       
 def deleteContact():
   contact = findContact(contacts)
   if contact is None:
-    NoContactsmessage()
+    noContactsmessage()
   else:
-    keys = list(contact.keys())
-    del contacts[keys[0]]
+    key = list(contact.keys())[0]
+    del contacts[key]
 
 def printOptions():
   print('''
