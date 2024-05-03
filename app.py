@@ -1,4 +1,4 @@
-import pyinputplus as pip, sys
+import pyinputplus as pip, sys, re
 
 contacts = {}
 
@@ -19,8 +19,6 @@ def displayContacts(allcontacts):
   for k, v in allcontacts.items():
     print('{}. {}: {}'.format(count, k, v['telephone']))
     count += 1
-  print('\n')
-  
 
 def createContact():
   contacts[enterName()] = {'telephone': enterPhoneNumber(), 'email': enterEmail()}
@@ -28,7 +26,7 @@ def createContact():
 def finder(contacts, key):
   proposedContacts = {}
   for contactName in contacts.keys():
-    if contactName.startswith(key) or contactName.endswith(key):
+    if contactName.lower().startswith(key.lower()) or contactName.lower().endswith(key.lower()):
       proposedContacts[contactName] = contacts[contactName]
   return proposedContacts
 
@@ -96,7 +94,7 @@ while True:
   match option:
     case 1: createContact()
     case 2: 
-      print('\nList of all contacts')
+      print('\nList of all contacts ')
       displayContacts(contacts)
     case 3: editContact()
     case 4: findContact(contacts)
