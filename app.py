@@ -25,21 +25,32 @@ def displayContacts(allcontacts):
 def createContact():
   contacts[enterName()] = {'telephone': enterPhoneNumber(), 'email': enterEmail()}
 
-def findContact():
+def finder(contacts, key):
   proposedContacts = {}
-  name = enterName()
   for contactName in contacts.keys():
     if contactName.startswith(name) or contactName.endswith(name):
       proposedContacts[contactName] = contacts[contactName]
+  
+  return proposedContacts
+
+
+def findContact(contacts):
+  if (len(contacts))<1:
+    print("You don't have any contacts, please add them to the list")
+    return None
+  name = enterName()
+  proposedContacts = finder(contacts, name)
   if len(proposedContacts):
     print('\nList Contacts found')
     displayContacts(proposedContacts)
     if len(proposedContacts) > 1:
       option = pip.inputYesNo("would you like to choose a specific contact?")
       if option == 'yes':
-        choice = pip.inputInt('Enter the contact number, for example: 1')
-      
-    
+        choice = pip.inputInt('Enter the contact number, for example: 1', min=1, max=len(proposedContacts))
+        keys = proposedContacts.keys()
+        return {keys[choice-1]: proposedContacts[keys[choice-1]]}
+      return None
+    return proposedContacts
   else:
     print("No contact found with name: " + name)
   
@@ -69,7 +80,7 @@ while True:
       displayContacts(contacts)
       break
     case 3: editContact()
-    case 4: findContact()
+    case 4: findContact(contacts)
     case 5: deleteContact()
     case 6: sys.exit()
     case _: print('Please enter a valid option: ')
