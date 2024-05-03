@@ -5,7 +5,7 @@ contacts = {}
 contact = {'name':{'tel':75652, 'email':'joy@example.com'}}
 
 def enterName(empt=False):
-  return pip.inputStr('Enter the contact name: ', allowRegexes=r'^([A-Za-z0-9_*=-%]*\s[A-Za-z0-9_*=-%]*)+$', blank=empt).strip()
+  return pip.inputStr('Enter the contact name: ', allowRegexes=r'^([A-Za-z0-9_*=-%]*\s[A-Za-z0-9_*=-%]*)+$', blank=empt).strip().title()
 
 def enterPhoneNumber(empt=False):
   return pip.inputStr('Enter the phone number: ', allowRegexes=r'^(76|79|72|78|69|68|62|61)\d{6})$', blank=empt ).strip()
@@ -14,13 +14,11 @@ def enterEmail(empt=False):
   return pip.inputStr('Enter the email address: ', allowRegexes=r'^[a-zA-Z0-9.%+_-]+@[a-zA-Z0-9.%+_-]+\.[a-z]+$', blank=empt).strip()
 
 
-
 def displayContacts(allcontacts):
   count = 1
   for k, v in allcontacts.items():
     print('{}. {}: {}'.format(count, k, v['telephone']))
     count += 1
-  
   print('\n')
   
 
@@ -32,7 +30,6 @@ def finder(contacts, key):
   for contactName in contacts.keys():
     if contactName.startswith(key) or contactName.endswith(key):
       proposedContacts[contactName] = contacts[contactName]
-  
   return proposedContacts
 
 def NoContactsmessage():
@@ -50,8 +47,8 @@ def findContact(contacts):
     if len(proposedContacts) > 1:
       option = pip.inputYesNo("would you like to choose a specific contact?")
       if option == 'yes':
-        choice = pip.inputInt('Enter the contact number, for example: 1', min=1, max=len(proposedContacts))
-        keys = proposedContacts.keys()
+        choice = pip.inputInt('Enter the contact number, for example, 1: ', min=1, max=len(proposedContacts))
+        keys = list(proposedContacts.keys())
         return {keys[choice-1]: proposedContacts[keys[choice-1]]}
       return None
     return proposedContacts
@@ -64,29 +61,24 @@ def editContact():
     NoContactsmessage()
   else:
     name = enterName(True)
-    tel = enterEmail(True)
+    tel = enterPhoneNumber(True)
     email = enterEmail(True)
-    key, value =  contact.items()
-
+    keys =  list(contact.keys())
     if len(tel):
-      contacts[key[0]]['telephone'] = tel
+      contacts[keys[0]]['telephone'] = tel
     if len(email):
-      contacts[key[0]]['email'] = email
+      contacts[keys[0]]['email'] = email
     if len(name):
-      contacts[name] = contacts[key[0]]
+      contacts[name] = contacts[keys[0]]
+      del contacts[keys[0]]
       
-    
-    
-
-
 def deleteContact():
   contact = findContact(contacts)
   if contact is None:
     NoContactsmessage()
   else:
-    key, value =  contact.items()
-    del contacts[key[0]]
-  
+    keys = list(contact.keys())
+    del contacts[keys[0]]
 
 def printOptions():
   print('''
